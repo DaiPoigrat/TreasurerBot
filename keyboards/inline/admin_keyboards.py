@@ -19,9 +19,6 @@ dataBaseKeyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Скачать книгу", callback_data='download_book'),
         ],
         [
-            InlineKeyboardButton(text="далить книгу", callback_data='delete_book'),
-        ],
-[
             InlineKeyboardButton(text="Задать активный реестр", callback_data='set_active_registry'),
         ],
         [

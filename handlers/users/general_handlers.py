@@ -6,20 +6,21 @@ from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher import FSMContext
 
 from data.config import ADMINS
-from keyboards.inline import registries
+from keyboards.inline import registries, cancelKeyboard
 from loader import dp, bot
 from states.states import AdminStates
 from utils.db_api.create_registry import get_date, create_book, set_active_registry
 import os
 
 
-# создание книги вручную
+# считывание названия
 @dp.callback_query_handler(user_id=ADMINS, text_contains='create_book', state=None)
 async def setNewRegistryName(call: CallbackQuery, state: FSMContext):
-    await call.message.answer(text='Введите название рестра без расширения')
+    await call.message.answer(text='Введите название рестра без расширения', reply_markup=cancelKeyboard)
     await AdminStates.EnterName.set()
 
 
+# создание рееста
 @dp.message_handler(user_id=ADMINS, state=AdminStates.EnterName)
 async def createNewRegistry(message: Message, state: FSMContext):
     registry_name = message.text + '.xlsx'
@@ -41,6 +42,7 @@ async def createNewRegistry(message: Message, state: FSMContext):
         await message.answer(text='Реестр успешно создан!\nСделать его активным?', reply_markup=choice)
 
 
+# делает реестр активным
 @dp.callback_query_handler(user_id=ADMINS, text_contains='set_registry')
 async def setActive(call: CallbackQuery):
     filename = call.data.split('_')[2]
@@ -48,19 +50,21 @@ async def setActive(call: CallbackQuery):
     await call.message.answer(f'Активный реестр:\n{filename}')
 
 
-# обработка команды отмена со всех клавиатур(ибо зачем писать каждому свое)
+# обработка команды отмена со всех клавиатур
 @dp.callback_query_handler(text_contains='cancel')
-async def cancel(call: CallbackQuery):
+async def cancel(call: CallbackQuery, state: FSMContext):
+    await state.reset_state(with_data=True)
     # возврат пустой клавиатуры
     await call.message.edit_reply_markup(reply_markup=None)
 
 
-# выгрузка реестра
+# выбор нужного реестра
 @dp.callback_query_handler(user_id=ADMINS, text_contains='download_book', state=None)
 async def chooseRegistry(call: CallbackQuery):
     await call.message.answer(text='Выберите нужный реестр', reply_markup=registries(attribute='get'))
 
 
+# скачивание рееста
 @dp.callback_query_handler(user_id=ADMINS, text_contains='get_registry')
 async def downloadRegistry(call: CallbackQuery):
     filename = call.data.split('_')[2]
@@ -68,6 +72,7 @@ async def downloadRegistry(call: CallbackQuery):
     await call.message.answer_document(document=register)
 
 
+# выбор нужного реестра
 @dp.callback_query_handler(user_id=ADMINS, text_contains='set_active_registry')
 async def chooseNewActive(call: CallbackQuery):
     await call.message.answer(text='Выберите нужный реестр', reply_markup=registries(attribute='set'))

@@ -27,6 +27,7 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
     user_id = int(data[2])
     user_state = dp.current_state(chat=user_id, user=user_id)
     await user_state.set_state(state=Chatting.ToAdmin)
+
     username = data[3]
     await state.update_data(
         {"user_id": user_id}
@@ -49,8 +50,9 @@ async def chatting(message: Message, state: FSMContext):
     try:
         # получаем id файла на сервере telegram
         file_id = message.document.file_id
-        #
+        # задаем описание
         caption = text(f'<b>Администратор</b>\n{message.caption}')
+        # отпарвляем документ
         await bot.send_document(chat_id=user_id, document=file_id, caption=caption)
 
     except:
@@ -59,15 +61,16 @@ async def chatting(message: Message, state: FSMContext):
     try:
         # задаем уникальное имя фотографии
         photo_name = message.photo[-1]["file_unique_id"]
-        #
+        # получаем id фото
         photo_id = message.photo[-1].file_id
-        #
+        # задаем описание
         caption = text(f'<b>Администратор</b>\n{message.caption}')
-        #
+        # отпарвояем фото
         await bot.send_photo(chat_id=user_id, photo=photo_id, caption=caption)
     except:
         flag_photo = True
 
+    # если не фото и не документ
     if flag_doc and flag_photo:
         await bot.send_message(chat_id=user_id, text=msg)
 
