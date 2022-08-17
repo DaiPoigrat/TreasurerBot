@@ -81,6 +81,8 @@ async def payment100(call: CallbackQuery, state: FSMContext):
     )
     await call.message.answer("Укажите получателя платежа")
     await IniciatorStates.State4.set()
+    # избавляемся от часиков
+    await bot.answer_callback_query(call.id)
 
 
 # сохраняем получателя платежа
@@ -199,3 +201,5 @@ async def link(call: CallbackQuery):
         ]
     )
     await bot.send_message(chat_id=ADMINS[0], text=msg_text, reply_markup=link_answer)
+    # избавляемся от часиков
+    await bot.answer_callback_query(call.id)

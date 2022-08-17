@@ -36,6 +36,8 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
     await bot.send_message(chat_id=user_id,
                            text='Скоро с вами свяжется Администратор\n'
                                 'Диалог будет проходить непосредственно через бота')
+    # избавляемся от часиков
+    await bot.answer_callback_query(call.id)
 
 
 @dp.message_handler(user_id=ADMINS, state=Chatting.ToPI, content_types=['photo', 'document', 'text'])
@@ -84,3 +86,5 @@ async def chattingEnd(call: CallbackQuery, state: FSMContext):
     await user_state.reset_state(with_data=True)
     await call.message.answer(text='Система:\nДиалог завершен')
     await bot.send_message(chat_id=user_id, text='Система:\nДиалог завершен', reply_markup=link)
+    # избавляемся от часиков
+    await bot.answer_callback_query(call.id)

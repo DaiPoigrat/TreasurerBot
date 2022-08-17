@@ -84,3 +84,24 @@ def create_data_record(data: dict, name: str) -> None:
     sheet.append(data_set)
     # сохраняем результат
     book.save(filename=f'registries/{active_registry}')
+
+
+# вспомогательные функции
+def writeBuffer(inf: str) -> None:
+    """
+    Запись данных в буфер
+    """
+    with open('data/buffer', 'w') as buffer:
+        buffer.write(inf)
+
+    buffer.close()
+
+
+def readBuffer() -> str:
+    """
+    Чтение из буфера
+    """
+    with open('data/buffer', 'r') as buffer:
+        inf = buffer.readline()
+        buffer.close()
+        return inf
