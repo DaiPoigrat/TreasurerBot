@@ -45,8 +45,11 @@ def registries(attribute: str) -> InlineKeyboardMarkup:
     Возвращает клавиатуру, кнопки которой - названия всех реестров
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
-    for filename in os.listdir('registries'):
-        keyboard.add(InlineKeyboardButton(text=filename, callback_data=f'{attribute}_registry_{filename}'))
+    try:
+        for filename in os.listdir('registries'):
+            keyboard.add(InlineKeyboardButton(text=filename, callback_data=f'{attribute}_registry_{filename}'))
+    except:
+        pass
     keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
     return keyboard
 
@@ -56,8 +59,11 @@ def iniciators() -> InlineKeyboardMarkup:
     Возвращает клавиатуру с инициаторами, когда-либо отправляющими файлы
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
-    for iniciator in os.listdir('files'):
-        keyboard.add(InlineKeyboardButton(text=f'{iniciator}', callback_data=f'iniciator_{iniciator}'))
+    try:
+        for iniciator in os.listdir('files'):
+            keyboard.add(InlineKeyboardButton(text=f'{iniciator}', callback_data=f'iniciator_{iniciator}'))
+    except:
+        pass
     keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
     return keyboard
 
@@ -67,7 +73,10 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
     Возвращает клавиатуру с файлами, отправленными данным инициатором
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
-    for filename in os.listdir(f'files/{iniciator}'):
-        keyboard.add(InlineKeyboardButton(text=f'{filename}', callback_data=f'download_file_{filename}'))
+    try:
+        for filename in os.listdir(f'files/{iniciator}'):
+            keyboard.add(InlineKeyboardButton(text=f'{filename}', callback_data=f'download_file_{filename}'))
+    except:
+        pass
     keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
     return keyboard
