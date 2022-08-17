@@ -27,9 +27,11 @@ async def setNewRegistryName(call: CallbackQuery, state: FSMContext):
 @dp.message_handler(user_id=ADMINS, state=AdminStates.EnterName)
 async def createNewRegistry(message: Message, state: FSMContext):
     registry_name = message.text + '.xlsx'
-
-    if registry_name in os.listdir('registries'):
-        await message.answer(text='Реестр с таким названием уже существует.\nПожалуйста, введите другое!')
+    try:
+        if registry_name in os.listdir('registries'):
+            await message.answer(text='Реестр с таким названием уже существует.\nПожалуйста, введите другое!')
+    except:
+        pass
     else:
         create_book(name=registry_name)
         await state.reset_state(with_data=True)
