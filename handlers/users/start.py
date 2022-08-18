@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import CallbackQuery, Message
 from states.states import IniciatorStates
 
-from data.config import ADMINS, CFO, TUTOR, ACCOUNTANT
+from data.config import ADMINS
 from keyboards.inline import keys
 from loader import dp
 from utils.db_api.create_registry import get_date, create_data_record
@@ -17,12 +17,6 @@ async def bot_start(message: types.Message):
     user_id = message.from_user.id
     if str(user_id) in ADMINS:
         await message.answer("Это панель администратора...")
-    elif user_id in CFO:
-        await message.answer(f"Этим пользуется CFO")
-    elif user_id in TUTOR:
-        await message.answer(f"Этим пользуется юрист куратор...")
-    elif user_id in ACCOUNTANT:
-        await message.answer(f"Этим пользуется бухгалтер...")
     else:
         await message.answer(f"Введите платеж", reply_markup=keys)
 
