@@ -62,6 +62,7 @@ def iniciators() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
         for iniciator in get_users_full_names():
+            logging.info(msg=f'Инициатор в кнопке {iniciator[0]}')
             keyboard.add(InlineKeyboardButton(text=f'{iniciator[0]}', callback_data=f'iniciator_{iniciator[0]}'))
     except Exception as err:
         logging.exception(err)
