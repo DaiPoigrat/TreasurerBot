@@ -123,7 +123,7 @@ async def downloadFile(call: CallbackQuery):
         )
         # id файла на сервере телеги
         result = db_object.fetchone()[0]
-        await bot.send_document(chat_id=ADMINS, document=result)
+        await call.message.answer_document(document=result)
 
     except Exception as err:
         logging.exception(err)
