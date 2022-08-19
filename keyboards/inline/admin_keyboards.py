@@ -88,10 +88,9 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
     try:
         db_connection = psycopg2.connect(DB_URI, sslmode="require")
         db_object = db_connection.cursor()
-        logging.info(f'GET_FILES_ID -> {get_files_id(user_id=iniciator)}')
         for file_id in get_files_id(user_id=iniciator):
             db_object.execute(
-                f"SELECT basis_of_payment FROM register WHERE file_id = %s", (file_id[0])
+                f"SELECT basis_of_payment FROM register WHERE file_id = '%s'", (file_id[0])
             )
 
             result = db_object.fetchone()[0]
