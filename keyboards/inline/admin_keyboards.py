@@ -90,7 +90,7 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
         db_object = db_connection.cursor()
         for file_id in get_files_id(user_id=iniciator):
             db_object.execute(
-                f"SELECT basis_of_payment FROM register WHERE file_id = {file_id[0]}"
+                f"SELECT basis_of_payment FROM register WHERE file_id = %s", (file_id[0])
             )
 
             result = db_object.fetchone()[0]
