@@ -72,12 +72,12 @@ def create_data_record(data: dict, name: str) -> None:
 
     # собираем данные в список, устанавляивая типы данных
     data_set = [
-        data[dict_keys[0]],
+        int(data[dict_keys[0]]),
         get_date(),
         name,
         data[dict_keys[1]],
-        data[dict_keys[2]],
-        data[dict_keys[3]],
+        int(data[dict_keys[2]]),
+        int(data[dict_keys[3]]),
         data[dict_keys[4]],
         data[dict_keys[5]],
         data[dict_keys[6]]

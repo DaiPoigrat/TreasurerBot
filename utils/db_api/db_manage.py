@@ -1,4 +1,5 @@
 import psycopg2
+import logging
 
 from data.config import DB_URI
 
@@ -15,8 +16,8 @@ def add_record(data: list) -> None:
             "INSERT INTO register(id, date_of_application, payment_iniciator, basis_of_payment, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline) VALUES (%d, %s, %s, %s, %d, %d, %s, %s, %s)",
             (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]))
         db_connection.commit()
-    except:
-        pass
+    except Exception as err:
+        logging.exception(err)
 
 
 def write_to_excel() -> None:
