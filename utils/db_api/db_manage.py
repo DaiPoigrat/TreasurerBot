@@ -27,7 +27,7 @@ def write_to_excel() -> None:
     pass
 
 
-def get_users_full_names() -> list:
+def get_users_full_names():
     """
     Возвращает список имен всех инициаторов платежей
     """
@@ -37,8 +37,9 @@ def get_users_full_names() -> list:
     db_object.execute(
         "SELECT DISTINCT payment_iniciator FROM register"
     )
-    logging.info(msg=f'{db_object.fetchall()}')
+
     result = db_object.fetchall()
+    logging.info(msg=f'{result}')
     return result
 
 
