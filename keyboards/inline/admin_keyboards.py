@@ -87,7 +87,8 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
         for file in get_files_id(user_id=iniciator):
-            keyboard.add(InlineKeyboardButton(text=f'{file[1]}', callback_data=f'download_file_{file[0]}'))
+            keyboard.add(InlineKeyboardButton(text=f'{file[1]}', callback_data=f'download_file_'))
+            # keyboard.add(InlineKeyboardButton(text=f'{file[1]}', callback_data=f'download_file_{file[0]}'))
     except Exception as err:
         logging.exception(err)
     finally:
