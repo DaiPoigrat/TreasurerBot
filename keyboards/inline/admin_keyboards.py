@@ -72,7 +72,7 @@ def iniciators() -> InlineKeyboardMarkup:
             )
 
             result = db_object.fetchone()[0]
-            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{iniciator}'))
+            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{iniciator[0]}'))
     except Exception as err:
         logging.exception(err)
     finally:
@@ -93,7 +93,7 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
                 f"SELECT basis_of_payment FROM register WHERE file_id = {filename[0]}"
             )
 
-            result = db_object.fetchone()
+            result = db_object.fetchone()[0]
             keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'download_file_{filename[0]}'))
     except Exception as err:
         logging.exception(err)

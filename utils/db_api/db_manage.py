@@ -42,7 +42,7 @@ def get_users_id() -> list:
     return result
 
 
-def get_files_id(user_id: int) -> list:
+def get_files_id(user_id) -> list:
     """
     Возвращает список id всех файлов с сервера Telegram
     user_id - id инициатора
