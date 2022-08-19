@@ -27,19 +27,18 @@ def write_to_excel() -> None:
     pass
 
 
-def get_users_full_names():
+def get_users_id():
     """
-    Возвращает список имен всех инициаторов платежей
+    Возвращает список id всех инициаторов платежей
     """
     db_connection = psycopg2.connect(DB_URI, sslmode="require")
     db_object = db_connection.cursor()
 
     db_object.execute(
-        "SELECT DISTINCT payment_iniciator FROM register"
+        "SELECT DISTINCT id FROM register"
     )
 
     result = db_object.fetchall()
-    logging.info(msg=f'{result}')
     return result
 
 

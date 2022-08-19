@@ -1,8 +1,10 @@
 import logging
+import psycopg2
+from data.config import DB_URI
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
-from utils.db_api.db_manage import get_users_full_names
+from utils.db_api.db_manage import get_users_id
 
 # кнопка отмены
 cancelKeyboard = InlineKeyboardMarkup(
@@ -61,10 +63,17 @@ def iniciators() -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
-        logging.info(msg=f'данные из бд - {get_users_full_names()}')
-        for iniciator in get_users_full_names():
-            logging.info(msg=f'Инициатор в кнопке {iniciator[0]}')
-            keyboard.add(InlineKeyboardButton(text=f'{iniciator[0]}', callback_data=f'iniciator_{iniciator[0]}'))
+        db_connection = psycopg2.connect(DB_URI, sslmode="require")
+        db_object = db_connection.cursor()
+        for iniciator in get_users_id():
+
+            db_object.execute(
+                f"SELECT payment_iniciator FROM register WHERE id = {iniciator[0]}"
+            )
+
+            result = db_object.fetchone()
+
+            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{result}'))
     except Exception as err:
         logging.exception(err)
     keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
