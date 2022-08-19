@@ -27,7 +27,7 @@ def write_to_excel() -> None:
     pass
 
 
-def get_users_id():
+def get_users_id() -> list:
     """
     Возвращает список id всех инициаторов платежей
     """
@@ -47,4 +47,12 @@ def get_files_id(user_id: int) -> list:
     Возвращает список id всех файлов с сервера Telegram
     user_id - id инициатора
     """
-    pass
+    db_connection = psycopg2.connect(DB_URI, sslmode="require")
+    db_object = db_connection.cursor()
+
+    db_object.execute(
+        f"SELECT file_id FROM register WHERE id = {user_id} AND basis_of_payment <> 'nothing'"
+    )
+
+    result = db_object.fetchall()
+    return result

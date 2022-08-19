@@ -4,7 +4,7 @@ from data.config import DB_URI
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
-from utils.db_api.db_manage import get_users_id
+from utils.db_api.db_manage import get_users_id, get_files_id
 
 # кнопка отмены
 cancelKeyboard = InlineKeyboardMarkup(
@@ -60,23 +60,23 @@ def registries(attribute: str) -> InlineKeyboardMarkup:
 def iniciators() -> InlineKeyboardMarkup:
     """
     Возвращает клавиатуру с инициаторами, когда-либо отправляющими файлы
+    В качестве коллбека выступит id юзера
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
         db_connection = psycopg2.connect(DB_URI, sslmode="require")
         db_object = db_connection.cursor()
         for iniciator in get_users_id():
-
             db_object.execute(
                 f"SELECT payment_iniciator FROM register WHERE id = {iniciator[0]}"
             )
 
             result = db_object.fetchone()[0]
-            logging.info(msg=f'result = {result}')
             keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{iniciator}'))
     except Exception as err:
         logging.exception(err)
-    keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
+    finally:
+        keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
     return keyboard
 
 
@@ -86,9 +86,17 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
-        for filename in os.listdir(f'files/{iniciator}'):
-            keyboard.add(InlineKeyboardButton(text=f'{filename}', callback_data=f'download_file_{filename}'))
-    except:
-        pass
-    keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
+        db_connection = psycopg2.connect(DB_URI, sslmode="require")
+        db_object = db_connection.cursor()
+        for filename in get_files_id(user_id=iniciator):
+            db_object.execute(
+                f"SELECT basis_of_payment FROM register WHERE file_id = {filename[0]}"
+            )
+
+            result = db_object.fetchone()
+            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'download_file_{filename[0]}'))
+    except Exception as err:
+        logging.exception(err)
+    finally:
+        keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
     return keyboard
