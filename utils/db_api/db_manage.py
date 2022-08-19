@@ -38,7 +38,8 @@ def get_users_full_names() -> list:
         "SELECT DISTINCT payment_iniciator FROM register"
     )
     logging.info(msg=f'{db_object.fetchall()}')
-    return db_object.fetchall()
+    result = db_object.fetchall()
+    return result
 
 
 def get_files_id(user_id: int) -> list:
