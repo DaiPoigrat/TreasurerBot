@@ -51,7 +51,7 @@ def get_files_id(user_id) -> list:
     db_object = db_connection.cursor()
 
     db_object.execute(
-        f"SELECT file_id FROM register WHERE id = {user_id} AND basis_of_payment != 'nothing'"
+        f"SELECT file_id FROM register WHERE (id = {user_id}) AND (basis_of_payment NOT LIKE %nothing%)"
     )
 
     result = db_object.fetchall()
