@@ -72,7 +72,7 @@ def iniciators() -> InlineKeyboardMarkup:
             )
 
             result = db_object.fetchone()
-
+            logging.info(msg=f'result = {result}')
             keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{result}'))
     except Exception as err:
         logging.exception(err)
