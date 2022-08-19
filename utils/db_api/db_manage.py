@@ -44,14 +44,14 @@ def get_users_id() -> list:
 
 def get_files_id(user_id) -> list:
     """
-    Возвращает список id всех файлов с сервера Telegram
+    Возвращает список id всех файлов с сервера Telegram и их названия
     user_id - id инициатора
     """
     db_connection = psycopg2.connect(DB_URI, sslmode="require")
     db_object = db_connection.cursor()
 
     db_object.execute(
-        f"SELECT file_id FROM register WHERE (id = {user_id}) AND (basis_of_payment NOT LIKE '%nothing%')"
+        f"SELECT file_id, basis_of_payment FROM register WHERE (id = {user_id}) AND (basis_of_payment NOT LIKE '%nothing%')"
     )
 
     result = db_object.fetchall()

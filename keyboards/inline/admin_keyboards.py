@@ -86,16 +86,8 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
-        db_connection = psycopg2.connect(DB_URI, sslmode="require")
-        db_object = db_connection.cursor()
-        for file_id in get_files_id(user_id=iniciator):
-            db_object.execute(
-                f"SELECT basis_of_payment FROM register WHERE file_id = %s", (file_id[0])
-            )
-
-            result = db_object.fetchone()[0]
-            logging.info(f'FUNCTION FILES -> result = {result}')
-            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'download_file_{file_id[0]}'))
+        for file in get_files_id(user_id=iniciator):
+            keyboard.add(InlineKeyboardButton(text=f'{file[1]}', callback_data=f'download_file_{file[0]}'))
     except Exception as err:
         logging.exception(err)
     finally:
