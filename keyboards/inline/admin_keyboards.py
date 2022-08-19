@@ -73,7 +73,7 @@ def iniciators() -> InlineKeyboardMarkup:
 
             result = db_object.fetchone()[0]
             logging.info(msg=f'result = {result}')
-            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{result}'))
+            keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'iniciator_{iniciator}'))
     except Exception as err:
         logging.exception(err)
     keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
