@@ -1,4 +1,5 @@
 # здесь прописываются хендлеры, общие для всех управляющих ролей
+import logging
 
 from aiogram.types import Message, ContentType, File, CallbackQuery, InputFile, InlineKeyboardMarkup, \
     InlineKeyboardButton
@@ -12,6 +13,8 @@ from states.states import AdminStates
 from utils.db_api.create_registry import get_date, create_book, set_active_registry, get_active_registry, readBuffer, \
     writeBuffer
 import os
+import psycopg2
+from data.config import DB_URI
 
 
 # считывание названия
@@ -104,16 +107,26 @@ async def chooseIniciator(call: CallbackQuery):
 async def chooseFile(call: CallbackQuery):
     iniciator = call.data.split('_')[1]
     await call.message.answer(text='Выберите нужный файл', reply_markup=files(iniciator=iniciator))
-    writeBuffer(inf=iniciator)
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
 
 
 @dp.callback_query_handler(user_id=ADMINS, text_contains='download_file_')
 async def downloadFile(call: CallbackQuery):
-    filename = call.data.split('_')[2]
-    iniciator = readBuffer()
-    file = InputFile(path_or_bytesio=f'files/{iniciator}/{filename}')
-    await call.message.answer_document(document=file)
+    unic_id = call.data.split('_')[2]
+    try:
+        db_connection = psycopg2.connect(DB_URI, sslmode="require")
+        db_object = db_connection.cursor()
+
+        db_object.execute(
+            f"SELECT file_id FROM register WHERE callback_id = {unic_id}"
+        )
+        # id файла на сервере телеги
+        result = db_object.fetchone()[0]
+        await bot.send_document(chat_id=ADMINS, document=result)
+
+    except Exception as err:
+        logging.exception(err)
+
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
