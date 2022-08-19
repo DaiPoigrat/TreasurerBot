@@ -55,7 +55,7 @@ async def getPaymentSum(message: Message, state: FSMContext):
         await state.update_data(
             {
                 "file_name": message.text,
-                "file_id": 0
+                "file_id": 'nothing'
             }
         )
     await message.answer("Укажите сумму оплаты")

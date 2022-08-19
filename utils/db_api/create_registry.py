@@ -76,7 +76,7 @@ def create_data_record(data: dict, name: str) -> None:
         get_date(),
         name,
         data[dict_keys[1]],
-        int(data[dict_keys[2]]),
+        data[dict_keys[2]],
         int(data[dict_keys[3]]),
         data[dict_keys[4]],
         data[dict_keys[5]],
