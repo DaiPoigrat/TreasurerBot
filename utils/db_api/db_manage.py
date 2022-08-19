@@ -35,7 +35,7 @@ def get_users_full_names() -> list:
     db_object = db_connection.cursor()
 
     db_object.execute(
-        "SELECT payment_iniciator FROM register"
+        "SELECT DISTINCT payment_iniciator FROM register"
     )
     logging.info(msg=f'{db_object.fetchall()}')
     return db_object.fetchall()
