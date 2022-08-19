@@ -1,7 +1,8 @@
-import typing
+import logging
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
+from utils.db_api.db_manage import get_users_full_names
 
 # кнопка отмены
 cancelKeyboard = InlineKeyboardMarkup(
@@ -60,10 +61,10 @@ def iniciators() -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup(row_width=1)
     try:
-        for iniciator in os.listdir('files'):
+        for iniciator in get_users_full_names():
             keyboard.add(InlineKeyboardButton(text=f'{iniciator}', callback_data=f'iniciator_{iniciator}'))
-    except:
-        pass
+    except Exception as err:
+        logging.exception(err)
     keyboard.add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
     return keyboard
 

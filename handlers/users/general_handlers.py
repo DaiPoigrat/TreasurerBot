@@ -92,7 +92,7 @@ async def chooseNewActive(call: CallbackQuery):
     await bot.answer_callback_query(call.id)
 
 
-#
+# выбор инициатора
 @dp.callback_query_handler(user_id=ADMINS, text_contains='download_files')
 async def chooseIniciator(call: CallbackQuery):
     await call.message.answer(text='Выберите инициатора из списка', reply_markup=iniciators())
