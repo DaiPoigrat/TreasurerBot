@@ -13,8 +13,8 @@ keys = InlineKeyboardMarkup(
 payment = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text='100%', callback_data='payment_100'),
-            InlineKeyboardButton(text='50%', callback_data='payment_50'),
+            InlineKeyboardButton(text='100%', callback_data='payment_100%'),
+            InlineKeyboardButton(text='50%', callback_data='payment_50%'),
             InlineKeyboardButton(text='Аванс', callback_data='payment_avans')
         ]
     ]
