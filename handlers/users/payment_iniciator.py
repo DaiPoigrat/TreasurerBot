@@ -21,17 +21,14 @@ async def getPaymentSum(message: Message, state: FSMContext):
     try:
         # получаем id файла на сервере telegram
         file_id = message.document.file_id
-        # получаем доступ к файлу по id
-        file = await bot.get_file(file_id)
-        # получаем путь к фалу на сервере
-        file_path = file.file_path
-        # прописываем имя файла (получим типа путь)
-        file_name = f'{message.from_user.full_name}/{message.document.file_name}'
-        # загружаем его
-        await bot.download_file(file_path, 'files/' + file_name)
+        # прописываем имя файла
+        file_name = message.document.file_name
         # обновляем данные
         await state.update_data(
-            {"file_name": file_name}
+            {
+                "file_name": file_name,
+                "file_id": file_id
+            }
         )
     except:
         # если не удалось загрузить документ
@@ -39,13 +36,14 @@ async def getPaymentSum(message: Message, state: FSMContext):
 
     try:
         # задаем уникальное имя фотографии
-        name = message.photo[-1]["file_unique_id"]
-        photo_name = f'{message.from_user.full_name}/{name}'
-        # загружаем
-        await message.photo[-1].download(f'files/{photo_name}.jpg')
+        photo_name = message.photo[-1]["file_unique_id"]
+        photo_id = message.photo[-1].file_id
         # обновляем данные
         await state.update_data(
-            {"file_name": photo_name}
+            {
+                "file_name": photo_name,
+                "file_id": photo_id
+            }
         )
     except:
         # если не удалось загрузить фото
@@ -55,7 +53,10 @@ async def getPaymentSum(message: Message, state: FSMContext):
     if flag_doc and flag_photo:
         # обновляем данные
         await state.update_data(
-            {"file_name": message.text}
+            {
+                "file_name": message.text,
+                "file_id": 0
+            }
         )
     await message.answer("Укажите сумму оплаты")
     await IniciatorStates.State2.set()

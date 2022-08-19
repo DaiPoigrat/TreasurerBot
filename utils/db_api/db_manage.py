@@ -13,8 +13,8 @@ def add_record(data: list) -> None:
         db_object = db_connection.cursor()
 
         db_object.execute(
-            "INSERT INTO register(id, date_of_application, payment_iniciator, basis_of_payment, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]))
+            "INSERT INTO register(id, date_of_application, payment_iniciator, basis_of_payment, file_id, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9]))
         db_connection.commit()
     except Exception as err:
         logging.exception(err)
