@@ -54,7 +54,5 @@ def get_files_id(user_id) -> list:
         f"SELECT file_id FROM register WHERE id = {user_id} AND basis_of_payment != 'nothing'"
     )
 
-    logging.info(msg=f'FUNCTION get_files_id -> {db_object.fetchall()}')
-
     result = db_object.fetchall()
     return result
