@@ -2,15 +2,21 @@ import psycopg2
 
 from data.config import DB_URI
 
-db_connection = psycopg2.connect(DB_URI, sslmode="require")
-db_object = db_connection.cursor()
-
 
 def add_record(data: list) -> None:
     """
     Создает запить в базе данных
     """
-    pass
+    try:
+        db_connection = psycopg2.connect(DB_URI, sslmode="require")
+        db_object = db_connection.cursor()
+
+        db_object.execute(
+            "INSERT INTO register(id, date_of_application, payment_iniciator, basis_of_payment, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline) VALUES (%d, %s, %s, %s, %d, %d, %s, %s, %s)",
+            (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]))
+        db_connection.commit()
+    except:
+        pass
 
 
 def write_to_excel() -> None:

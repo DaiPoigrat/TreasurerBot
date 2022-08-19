@@ -24,7 +24,10 @@ async def bot_start(message: types.Message):
 @dp.callback_query_handler(text_contains='plan', state='*')
 async def getBasisOfPaymentPlan(call: CallbackQuery, state: FSMContext):
     await state.update_data(
-        {"type": 'План'}
+        {
+            "type": 'План',
+            "user_id": call.from_user.id
+        }
     )
     await call.message.answer(
         "Прикрепите основание оплаты:\n- счет на оплату;\n- акт сверки;\n- чек;\n- скрин транзакции.")
@@ -34,7 +37,10 @@ async def getBasisOfPaymentPlan(call: CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(text_contains='fact', state='*')
 async def getBasisOfPaymentFact(call: CallbackQuery, state: FSMContext):
     await state.update_data(
-        {"type": 'Факт'}
+        {
+            "type": 'Факт',
+            "user_id": call.from_user.id
+        }
     )
     await call.message.answer(
         "Прикрепите основание оплаты:\n- счет на оплату;\n- акт сверки;\n- чек;\n- скрин транзакции.")

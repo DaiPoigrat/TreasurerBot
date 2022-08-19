@@ -4,7 +4,9 @@ import openpyxl
 import typing
 
 # ключи доступа к файлам словаря данных заявки
-dict_keys = ['file_name', 'payment_sum', 'payment_amount', 'payment_recipient', 'purpose_of_payment',
+from utils.db_api.db_manage import add_record
+
+dict_keys = ['user_id', 'file_name', 'payment_sum', 'payment_amount', 'payment_recipient', 'purpose_of_payment',
              'payment_deadline']
 
 titles = ['Дата поступления', 'Инициатор платежа', 'Основание платежа', 'Сумма платежа', 'Размер оплаты',
@@ -63,27 +65,30 @@ def create_data_record(data: dict, name: str) -> None:
     """
     Создает новую запись в реестре
     """
-    active_registry = get_active_registry()
-    # открываем книгу с текущей датой создания
-    book = openpyxl.open(filename=f'registries/{active_registry}')
-    sheet = book.worksheets[0]
+    # active_registry = get_active_registry()
+    # # открываем книгу с текущей датой создания
+    # book = openpyxl.open(filename=f'registries/{active_registry}')
+    # sheet = book.worksheets[0]
 
     # собираем данные в список, устанавляивая типы данных
     data_set = [
+        data[dict_keys[0]],
         get_date(),
         name,
-        data[dict_keys[0]],
         data[dict_keys[1]],
         data[dict_keys[2]],
         data[dict_keys[3]],
         data[dict_keys[4]],
-        data[dict_keys[5]]
+        data[dict_keys[5]],
+        data[dict_keys[6]]
     ]
 
-    # записываем в строку таблицы
-    sheet.append(data_set)
-    # сохраняем результат
-    book.save(filename=f'registries/{active_registry}')
+    add_record(data=data_set)
+
+    # # записываем в строку таблицы
+    # sheet.append(data_set)
+    # # сохраняем результат
+    # book.save(filename=f'registries/{active_registry}')
 
 
 # вспомогательные функции
