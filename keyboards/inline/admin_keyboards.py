@@ -94,6 +94,7 @@ def files(iniciator: str) -> InlineKeyboardMarkup:
             )
 
             result = db_object.fetchone()[0]
+            logging.info(f'FUNCTION FILES -> result = {result}')
             keyboard.add(InlineKeyboardButton(text=f'{result}', callback_data=f'download_file_{file_id[0]}'))
     except Exception as err:
         logging.exception(err)
