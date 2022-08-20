@@ -1,5 +1,6 @@
 import psycopg2
 import logging
+import openpyxl
 
 from data.config import DB_URI
 
@@ -24,7 +25,28 @@ def write_to_excel() -> None:
     """
     Переписывает реест из базы данных в excel файл
     """
-    pass
+    try:
+        db_connection = psycopg2.connect(DB_URI, sslmode="require")
+        db_object = db_connection.cursor()
+
+        db_object.execute(
+            "SELECT date_of_application, payment_iniciator, basis_of_payment, file_id, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline FROM register"
+        )
+
+        result = db_object.fetchall()
+
+        doc = openpyxl.open(filename='data/register.xlsx')
+        sheet = doc.worksheets[0]
+
+        logging.info(msg=f'RESULT = {result}')
+        logging.info(msg=f'SHEET PROP = {sheet.sheet_properties}')
+
+        # for row in result:
+        #     sheet.append(row)
+
+
+    except Exception as err:
+        logging.exception(err)
 
 
 def get_users_id() -> list:

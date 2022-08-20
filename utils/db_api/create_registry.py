@@ -33,7 +33,7 @@ def set_active_registry(new_active: str) -> None:
 def get_date() -> str:
     """
     Влзвращает текущую дату и время
-    д-м-гггг ч-м-с
+    д-м-гггг ч:м:с
     """
     # получаем текущее время
     time_object = datetime.datetime.now()

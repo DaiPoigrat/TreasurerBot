@@ -17,47 +17,52 @@ import psycopg2
 from data.config import DB_URI
 
 
-# считывание названия
-@dp.callback_query_handler(user_id=ADMINS, text_contains='create_book', state=None)
-async def setNewRegistryName(call: CallbackQuery, state: FSMContext):
-    await call.message.answer(text='Введите название рестра без расширения', reply_markup=cancelKeyboard)
-    await AdminStates.EnterName.set()
-    # избавляемся от часиков
-    await bot.answer_callback_query(call.id)
+# # считывание названия
+# @dp.callback_query_handler(user_id=ADMINS, text_contains='create_book', state=None)
+# async def setNewRegistryName(call: CallbackQuery, state: FSMContext):
+#     await call.message.answer(text='Введите название рестра без расширения', reply_markup=cancelKeyboard)
+#     await AdminStates.EnterName.set()
+#     # избавляемся от часиков
+#     await bot.answer_callback_query(call.id)
+#
+#
+# # создание рееста
+# @dp.message_handler(user_id=ADMINS, state=AdminStates.EnterName)
+# async def createNewRegistry(message: Message, state: FSMContext):
+#     registry_name = message.text + '.xlsx'
+#     try:
+#         if registry_name in os.listdir('registries'):
+#             await message.answer(text='Реестр с таким названием уже существует.\nПожалуйста, введите другое!')
+#     except:
+#         pass
+#     else:
+#         create_book(name=registry_name)
+#         await state.reset_state(with_data=True)
+#
+#         choice = InlineKeyboardMarkup(
+#             inline_keyboard=[
+#                 [
+#                     InlineKeyboardButton(text='Да', callback_data=f'set_registry_{registry_name}'),
+#                     InlineKeyboardButton(text='Нет', callback_data='cancel'),
+#                 ]
+#             ]
+#         )
+#         await message.answer(text='Реестр успешно создан!\nСделать его активным?', reply_markup=choice)
 
 
-# создание рееста
-@dp.message_handler(user_id=ADMINS, state=AdminStates.EnterName)
-async def createNewRegistry(message: Message, state: FSMContext):
-    registry_name = message.text + '.xlsx'
-    try:
-        if registry_name in os.listdir('registries'):
-            await message.answer(text='Реестр с таким названием уже существует.\nПожалуйста, введите другое!')
-    except:
-        pass
-    else:
-        create_book(name=registry_name)
-        await state.reset_state(with_data=True)
-
-        choice = InlineKeyboardMarkup(
-            inline_keyboard=[
-                [
-                    InlineKeyboardButton(text='Да', callback_data=f'set_registry_{registry_name}'),
-                    InlineKeyboardButton(text='Нет', callback_data='cancel'),
-                ]
-            ]
-        )
-        await message.answer(text='Реестр успешно создан!\nСделать его активным?', reply_markup=choice)
+# # делает реестр активным
+# @dp.callback_query_handler(user_id=ADMINS, text_contains='set_registry')
+# async def setActive(call: CallbackQuery):
+#     filename = call.data.split('_')[2]
+#     set_active_registry(new_active=filename)
+#     await call.message.answer(f'Активный реестр:\n{filename}')
+#     # избавляемся от часиков
+#     await bot.answer_callback_query(call.id)
 
 
-# делает реестр активным
-@dp.callback_query_handler(user_id=ADMINS, text_contains='set_registry')
-async def setActive(call: CallbackQuery):
-    filename = call.data.split('_')[2]
-    set_active_registry(new_active=filename)
-    await call.message.answer(f'Активный реестр:\n{filename}')
-    # избавляемся от часиков
-    await bot.answer_callback_query(call.id)
+#
+@dp.callback_query_handler(user_id=ADMINS, text_contains='download_register')
+async def downloadRegistry(call: CallbackQuery):
 
 
 # обработка команды отмена со всех клавиатур
@@ -68,12 +73,12 @@ async def cancel(call: CallbackQuery, state: FSMContext):
     await call.message.edit_reply_markup(reply_markup=None)
 
 
-# выбор нужного реестра
-@dp.callback_query_handler(user_id=ADMINS, text_contains='download_book', state=None)
-async def chooseRegistry(call: CallbackQuery):
-    await call.message.answer(text='Выберите нужный реестр', reply_markup=registries(attribute='get'))
-    # избавляемся от часиков
-    await bot.answer_callback_query(call.id)
+# # выбор нужного реестра
+# @dp.callback_query_handler(user_id=ADMINS, text_contains='download_book', state=None)
+# async def chooseRegistry(call: CallbackQuery):
+#     await call.message.answer(text='Выберите нужный реестр', reply_markup=registries(attribute='get'))
+#     # избавляемся от часиков
+#     await bot.answer_callback_query(call.id)
 
 
 # скачивание рееста
@@ -86,13 +91,13 @@ async def downloadRegistry(call: CallbackQuery):
     await bot.answer_callback_query(call.id)
 
 
-# выбор нужного реестра
-@dp.callback_query_handler(user_id=ADMINS, text_contains='set_active_registry')
-async def chooseNewActive(call: CallbackQuery):
-    await call.message.answer(text=f'Выберите нужный реестр\nТекущий активный - {get_active_registry()}',
-                              reply_markup=registries(attribute='set'))
-    # избавляемся от часиков
-    await bot.answer_callback_query(call.id)
+# # выбор нужного реестра
+# @dp.callback_query_handler(user_id=ADMINS, text_contains='set_active_registry')
+# async def chooseNewActive(call: CallbackQuery):
+#     await call.message.answer(text=f'Выберите нужный реестр\nТекущий активный - {get_active_registry()}',
+#                               reply_markup=registries(attribute='set'))
+#     # избавляемся от часиков
+#     await bot.answer_callback_query(call.id)
 
 
 # выбор инициатора
