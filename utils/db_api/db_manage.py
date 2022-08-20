@@ -39,11 +39,8 @@ def write_to_excel() -> None:
         doc.create_sheet(title='Заявки', index=0)
         sheet = doc.worksheets[0]
 
-        logging.info(msg=f'RESULT = {result}')
-        logging.info(msg=f'SHEET PROP = {sheet.sheet_properties}')
-
         for row in result:
-            sheet.append([item for item in row])
+            sheet.append([str(item).lstrip() for item in row])
 
         doc.save(filename='data/register.xlsx')
     except Exception as err:
