@@ -40,7 +40,7 @@ def write_to_excel() -> None:
         sheet = doc.worksheets[0]
 
         for row in result:
-            sheet.append([str(item).lstrip() for item in row])
+            sheet.append([str(item).rstrip() for item in row])
 
         doc.save(filename='data/register.xlsx')
     except Exception as err:
