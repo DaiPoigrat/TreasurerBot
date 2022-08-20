@@ -122,7 +122,7 @@ async def downloadFile(call: CallbackQuery):
             f"SELECT file_id FROM register WHERE callback_id = {unic_id}"
         )
         # id файла на сервере телеги
-        result = db_object.fetchone()[0]
+        result = db_object.fetchone()[0].rstrip()
         logging.info(f'FILE_ID ==> {result}!!!!')
         await call.message.answer_document(document='result')
 
