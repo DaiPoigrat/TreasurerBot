@@ -9,6 +9,7 @@ from aiogram.dispatcher import FSMContext
 from data.config import ADMINS
 from keyboards.inline import registries, cancelKeyboard, iniciators, files
 from loader import dp, bot
+from utils.db_api.db_manage import write_to_excel
 from states.states import AdminStates
 from utils.db_api.create_registry import get_date, create_book, set_active_registry, get_active_registry, readBuffer, \
     writeBuffer
@@ -61,9 +62,12 @@ from data.config import DB_URI
 
 
 #
+
+
+
 @dp.callback_query_handler(user_id=ADMINS, text_contains='download_register')
 async def downloadRegistry(call: CallbackQuery):
-
+    write_to_excel()
 
 # обработка команды отмена со всех клавиатур
 @dp.callback_query_handler(text_contains='cancel')
