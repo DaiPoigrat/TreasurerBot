@@ -4,6 +4,9 @@ import openpyxl
 
 from data.config import DB_URI
 
+titles = ['Дата поступления', 'Инициатор платежа', 'Основание платежа', 'id документа', 'Сумма платежа',
+          'Размер оплаты', 'Получатель', 'Назначение', 'Крайний срок оплаты']
+
 
 def add_record(data: list) -> None:
     """
@@ -38,6 +41,7 @@ def write_to_excel() -> None:
         doc = openpyxl.open(filename='data/register.xlsx')
         doc.create_sheet(title='Заявки', index=0)
         sheet = doc.worksheets[0]
+        sheet.append(titles)
 
         for row in result:
             sheet.append([str(item).rstrip() for item in row])
