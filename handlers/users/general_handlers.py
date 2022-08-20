@@ -124,7 +124,7 @@ async def downloadFile(call: CallbackQuery):
         # id файла на сервере телеги
         result = db_object.fetchone()[0].rstrip()
         logging.info(f'FILE_ID ==> {result}!!!!')
-        await call.message.answer_document(document='result')
+        await call.message.answer_document(document=result)
 
     except Exception as err:
         logging.exception(err)
