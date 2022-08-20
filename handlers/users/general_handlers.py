@@ -123,8 +123,12 @@ async def downloadFile(call: CallbackQuery):
         )
         # id файла на сервере телеги
         result = db_object.fetchone()[0].rstrip()
-        logging.info(f'FILE_ID ==> {result}!!!!')
-        await call.message.answer_document(document=result)
+        # костыль на отпрвку файлов и фото
+        try:
+            await call.message.answer_document(document=result)
+        except:
+            await call.message.answer_photo(photo=result)
+
 
     except Exception as err:
         logging.exception(err)
