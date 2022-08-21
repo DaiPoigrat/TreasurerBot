@@ -12,9 +12,10 @@ from utils.db_api.create_registry import get_date, create_data_record
 from aiogram.utils.markdown import text
 
 
-@dp.message_handler(CommandStart())
-async def bot_start(message: types.Message):
+@dp.message_handler(CommandStart(), state='*')
+async def bot_start(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    await state.reset_state(with_data=True)
     if str(user_id) in ADMINS:
         await message.answer("Это панель администратора...")
     else:
