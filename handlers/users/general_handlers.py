@@ -9,7 +9,7 @@ from aiogram.dispatcher import FSMContext
 from data.config import ADMINS
 from keyboards.inline import registries, cancelKeyboard, iniciators, files
 from loader import dp, bot
-from utils.db_api.db_manage import write_to_excel, drop_excel
+from utils.db_api.db_manage import write_to_excel, drop_excel, update_data
 from states.states import AdminStates
 from utils.db_api.create_registry import get_date, create_book, set_active_registry, get_active_registry, readBuffer, \
     writeBuffer
@@ -87,15 +87,13 @@ async def getRegistry(call: CallbackQuery, state: FSMContext):
     await call.message.answer('Пришлите excel документ')
     await AdminStates.UploadFile.set()
     await bot.answer_callback_query(call.id)
-    logging.info(msg='AAAAAAAAAAAAAAAAAAAAAAAAA')
 
 
 @dp.message_handler(user_id=ADMINS, state=AdminStates.UploadFile, content_types=['document'])
 async def updateDataBase(message: Message, state: FSMContext):
-    logging.info(msg='DDDDDDDDDDDDDDDDDDDDDDDD')
     file_id = message.document.file_id
     file = await bot.get_file(file_id=file_id)
-    logging.info(msg=f'file = {file.file_size}')
+    update_data(file=file)
     await state.reset_state(with_data=True)
 
 

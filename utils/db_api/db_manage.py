@@ -144,4 +144,9 @@ def update_data(file) -> None:
     """
     Обновляет данные в бд из excel
     """
-    doc = openpyxl.open(filename=file)
+    try:
+        doc = openpyxl.open(filename=file)
+        sheet = doc.worksheets[0]
+        logging.info(f'sheet prop = {sheet.sheet_properties}')
+    except Exception as err:
+        logging.exception(err)
