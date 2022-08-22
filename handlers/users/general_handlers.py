@@ -69,6 +69,7 @@ async def downloadRegistry(call: CallbackQuery):
     write_to_excel()
     doc = InputFile(path_or_bytesio='data/register.xlsx')
     await call.message.answer_document(document=doc)
+    drop_excel()
 
 
 # обработка команды отмена со всех клавиатур
@@ -79,7 +80,13 @@ async def cancel(call: CallbackQuery, state: FSMContext):
     await call.message.edit_reply_markup(reply_markup=None)
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
-    drop_excel()
+
+
+@dp.callback_query_handler(user_id=ADMINS, text_contains='update_register')
+async def update_registry(call: CallbackQuery):
+    file_id = call.message.document.file_id
+    file = bot.get_file(file_id=file_id)
+    logging.info(f'file = {file}')
 
 
 # # выбор нужного реестра

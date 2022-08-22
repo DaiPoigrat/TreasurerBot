@@ -21,6 +21,9 @@ dataBaseKeyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Скачать книгу", callback_data='download_register'),
         ],
         [
+            InlineKeyboardButton(text="Обновить данные", callback_data='update_register'),
+        ],
+        [
             InlineKeyboardButton(text='Скачать файлы', callback_data='download_files')
         ],
         [

@@ -1,6 +1,7 @@
 import psycopg2
 import logging
 import openpyxl
+from aiogram.types import InputFile
 
 from data.config import DB_URI
 
@@ -92,3 +93,55 @@ def get_files_id(user_id) -> list:
 
     result = db_object.fetchall()
     return result
+
+
+def recreate_table() -> None:
+    db_connection = psycopg2.connect(DB_URI, sslmode="require")
+    db_object = db_connection.cursor()
+    db_object.execute(
+        """
+        create table register
+        (
+            id                  integer   not null,
+            date_of_application char(50)  not null,
+            payment_iniciator   char(300) not null,
+            basis_of_payment    char(300) not null,
+            payment_sum         integer   not null,
+            payment_amount      char(10)  not null,
+            payment_recipient   char(300) not null,
+            purpose_of_payment  char(300) not null,
+            payment_deadline    char(20)  not null,
+            file_id             char(300) not null,
+            callback_id         integer generated always as identity
+        );
+        comment on column register.id is 'id юзера в телеге';
+
+        comment on column register.date_of_application is 'дата получения заявки';
+        
+        comment on column register.payment_iniciator is 'инициатор платежа';
+        
+        comment on column register.basis_of_payment is 'основание платежа (текст или название дока)';
+        
+        comment on column register.payment_sum is 'сумма платежа';
+        
+        comment on column register.payment_amount is 'размер оплаты';
+        
+        comment on column register.payment_recipient is 'получатель';
+        
+        comment on column register.purpose_of_payment is 'назначение платежа';
+        
+        comment on column register.payment_deadline is 'крайний срок оплаты';
+        
+        comment on column register.file_id is 'id файла или 0, если текстовое описание';
+        
+        alter table register
+            owner to tqwsruaobvphad;
+        """
+    )
+
+
+def update_data(file) -> None:
+    """
+    Обновляет данные в бд из excel
+    """
+    doc = openpyxl.open(filename=file)
