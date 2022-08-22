@@ -18,6 +18,7 @@ class IniciatorStates(StatesGroup):
 
 class AdminStates(StatesGroup):
     EnterName = State()
+    UploadFile = State()
 
 
 class Chatting(StatesGroup):
