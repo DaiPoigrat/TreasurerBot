@@ -1,5 +1,7 @@
 # скрипт создания реестра
 import datetime
+import logging
+
 import openpyxl
 import typing
 
@@ -11,22 +13,6 @@ dict_keys = ['user_id', 'file_name', 'file_id', 'payment_sum', 'payment_amount',
 
 titles = ['Дата поступления', 'Инициатор платежа', 'Основание платежа', 'Сумма платежа', 'Размер оплаты',
           'Получатель', 'Назначение', 'Крайний срок оплаты']
-
-
-def get_active_registry() -> str:
-    """
-    Возвращает название активного реестра
-    """
-    with open('data/active_registry', 'r') as file:
-        return file.readline()
-
-
-def set_active_registry(new_active: str) -> None:
-    """
-    Меняет активный реест
-    """
-    with open('data/active_registry', 'w') as file:
-        file.write(f'{new_active}')
 
 
 # получаем дату в нужном формате
@@ -64,6 +50,9 @@ def create_book(name: str) -> None:
 def create_data_record(data: dict, name: str) -> None:
     """
     Создает новую запись в реестре
+
+    :param data: словарь, который вернет state
+    :param name: имя инициатора платежа
     """
     # active_registry = get_active_registry()
     # # открываем книгу с текущей датой создания
@@ -92,22 +81,18 @@ def create_data_record(data: dict, name: str) -> None:
     # book.save(filename=f'registries/{active_registry}')
 
 
-# вспомогательные функции
-def writeBuffer(inf: str) -> None:
+def get_records_by_name(user_name: str) -> None:
     """
-    Запись данных в буфер
-    """
-    with open('data/buffer', 'w') as buffer:
-        buffer.write(inf)
+    Заполнит документ user_report по full_name
 
-    buffer.close()
-
-
-def readBuffer() -> str:
+    :param user_name: ful_name на сервере telegram
     """
-    Чтение из буфера
-    """
-    with open('data/buffer', 'r') as buffer:
-        inf = buffer.readline()
-        buffer.close()
-        return inf
+    register = openpyxl.open('data/register')
+    register_sheet = register.worksheets[0]
+    report = openpyxl.open('data/user_report')
+    report_sheet = register.worksheets[0]
+
+    line = []
+    for row in range(2, register_sheet.max_row + 1):
+        if register_sheet.cell(row=row, column=2) == user_name:
+            logging.info(msg='НАШЛИ ЗАПИСЬ')

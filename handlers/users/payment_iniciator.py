@@ -8,7 +8,7 @@ from loader import dp, bot
 from states.states import IniciatorStates, Chatting
 
 from aiogram.utils.markdown import text
-from utils.db_api.create_registry import get_date, create_data_record
+from utils.db_api.create_registry import get_date, create_data_record, get_records_by_name
 
 
 # получаем сумму платежа
@@ -133,7 +133,7 @@ async def clearStates(message: Message, state: FSMContext):
     # id пользователя
     user_id = message.from_user.id
     # информация по заявке
-    msg_text = text(f'Получена новая заявка\nИнформация:\n- Имя: {name}\n- Тип заявки: {data["type"]}')
+    msg_text = text(f'<b>Система</b>\nПолучена новая заявка\nИнформация:\n- Имя: {name}\n- Тип заявки: {data["type"]}')
     # с этой кнопки идет переход в состояние чата через бота(от админа)
     chatting_start = InlineKeyboardMarkup(
         inline_keyboard=[
@@ -204,3 +204,9 @@ async def link(call: CallbackQuery):
     await bot.send_message(chat_id=ADMINS[0], text=msg_text, reply_markup=link_answer)
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
+
+
+@dp.callback_query_handler(text_contains='get_my_payments')
+async def getPayments(call: CallbackQuery):
+    user_name = call.from_user.full_name
+    get_records_by_name(user_name=user_name)
