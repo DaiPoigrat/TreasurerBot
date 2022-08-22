@@ -93,7 +93,10 @@ async def getRegistry(call: CallbackQuery, state: FSMContext):
 async def updateDataBase(message: Message, state: FSMContext):
     file_id = message.document.file_id
     file = await bot.get_file(file_id=file_id)
-    update_data(file=file)
+    await bot.download_file(file_path=file.file_path, destination='data/temp_reg.xlsx')
+    # update_data(file=file)
+    tmp_file = InputFile(path_or_bytesio='data/temp_reg.xlsx')
+    await message.answer_document(document=tmp_file)
     await state.reset_state(with_data=True)
 
 
