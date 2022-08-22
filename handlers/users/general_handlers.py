@@ -93,7 +93,7 @@ async def getRegistry(call: CallbackQuery, state: FSMContext):
 async def updateDataBase(message: Message, state: FSMContext):
     file_id = await message.document.file_id
     file = bot.get_file(file_id=file_id)
-    logging.info(f'file = {file_id}')
+    logging.info(msg=f'file = {file_id}')
     await state.reset_state(with_data=True)
 
 
