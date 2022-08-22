@@ -90,7 +90,7 @@ async def getRegistry(call: CallbackQuery, state: FSMContext):
     logging.info(msg='AAAAAAAAAAAAAAAAAAAAAAAAA')
 
 
-@dp.message_handler(user_id=ADMINS, state=AdminStates.UploadFile)
+@dp.message_handler(user_id=ADMINS, state=AdminStates.UploadFile, content_types=['document'])
 async def updateDataBase(message: Message, state: FSMContext):
     logging.info(msg='DDDDDDDDDDDDDDDDDDDDDDDD')
     file_id = message.document.file_id
