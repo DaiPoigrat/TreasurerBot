@@ -12,8 +12,7 @@ from keyboards.inline import registries, cancelKeyboard, iniciators, files
 from loader import dp, bot
 from utils.db_api.db_manage import write_to_excel, drop_excel
 from states.states import AdminStates
-from utils.db_api.create_registry import get_date, create_book, set_active_registry, get_active_registry, readBuffer, \
-    writeBuffer
+from utils.db_api.create_registry import get_date, create_book
 import os
 import psycopg2
 from data.config import DB_URI
