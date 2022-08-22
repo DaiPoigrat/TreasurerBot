@@ -85,7 +85,7 @@ async def cancel(call: CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(user_id=ADMINS, text_contains='update_register', state=None)
 async def getRegistry(call: CallbackQuery, state: FSMContext):
     await call.message.answer('Пришлите excel документ')
-    AdminStates.UploadFile.set()
+    await AdminStates.UploadFile.set()
     await bot.answer_callback_query(call.id)
 
 
@@ -94,6 +94,7 @@ async def updateDataBase(message: Message, state: FSMContext):
     file_id = await message.document.file_id
     file = bot.get_file(file_id=file_id)
     logging.info(f'file = {file}')
+    await state.reset_state(with_data=True)
 
 
 # # выбор нужного реестра
