@@ -140,13 +140,13 @@ def recreate_table() -> None:
     )
 
 
-def update_data(file) -> None:
+def update_data() -> None:
     """
     Обновляет данные в бд из excel
     """
     try:
-        doc = openpyxl.open(filename=file)
+        doc = openpyxl.open(filename='data/temp_reg.xlsx')
         sheet = doc.worksheets[0]
-        logging.info(f'sheet prop = {sheet.sheet_properties}')
+
     except Exception as err:
         logging.exception(err)

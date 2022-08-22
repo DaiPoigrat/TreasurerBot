@@ -5,6 +5,7 @@ from aiogram.types import Message, ContentType, File, CallbackQuery, InputFile, 
     InlineKeyboardButton
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher import FSMContext
+from aiogram.utils.markdown import text
 
 from data.config import ADMINS
 from keyboards.inline import registries, cancelKeyboard, iniciators, files
@@ -84,20 +85,23 @@ async def cancel(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(user_id=ADMINS, text_contains='update_register', state=None)
 async def getRegistry(call: CallbackQuery, state: FSMContext):
-    await call.message.answer('Пришлите excel документ')
+    await call.message.answer(text('<b>Система</b>\nПришлите excel документ'))
     await AdminStates.UploadFile.set()
     await bot.answer_callback_query(call.id)
 
 
 @dp.message_handler(user_id=ADMINS, state=AdminStates.UploadFile, content_types=['document'])
 async def updateDataBase(message: Message, state: FSMContext):
-    file_id = message.document.file_id
-    file = await bot.get_file(file_id=file_id)
-    await bot.download_file(file_path=file.file_path, destination='data/temp_reg.xlsx')
-    # update_data(file=file)
-    tmp_file = InputFile(path_or_bytesio='data/temp_reg.xlsx')
-    await message.answer_document(document=tmp_file)
-    await state.reset_state(with_data=True)
+    try:
+        file_id = message.document.file_id
+        file = await bot.get_file(file_id=file_id)
+        await bot.download_file(file_path=file.file_path, destination='data/register.xlsx')
+        await message.answer(text('<b>Система</b>\nДанные успешно обновлены!'))
+    except Exception as err:
+        await message.answer(text('<b>Система</b>\nПроизошла ошибка, обратитесь к администратору!'))
+        logging.exception(err)
+    finally:
+        await state.reset_state(with_data=True)
 
 
 # # выбор нужного реестра
@@ -130,7 +134,7 @@ async def downloadRegistry(call: CallbackQuery):
 # выбор инициатора
 @dp.callback_query_handler(user_id=ADMINS, text_contains='download_files')
 async def chooseIniciator(call: CallbackQuery):
-    await call.message.answer(text='Выберите инициатора из списка', reply_markup=iniciators())
+    await call.message.answer(text=text('<b>Система</b>\nВыберите инициатора из списка'), reply_markup=iniciators())
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
 
@@ -138,7 +142,7 @@ async def chooseIniciator(call: CallbackQuery):
 @dp.callback_query_handler(user_id=ADMINS, text_contains='iniciator_')
 async def chooseFile(call: CallbackQuery):
     iniciator = call.data.split('_')[1]
-    await call.message.answer(text='Выберите нужный файл', reply_markup=files(iniciator=iniciator))
+    await call.message.answer(text=text('<b>Система</b>\nВыберите нужный файл'), reply_markup=files(iniciator=iniciator))
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
 

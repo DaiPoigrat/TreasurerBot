@@ -15,7 +15,7 @@ from aiogram.utils.markdown import text
 # работа со скачанными файлами
 @dp.message_handler(user_id=ADMINS, commands=['dbmanage'], state=None)
 async def dataBaseManage(message: Message):
-    await message.answer(text="Выберите действие", reply_markup=dataBaseKeyboard)
+    await message.answer(text=text("<b>Система</b>\nВыберите действие"), reply_markup=dataBaseKeyboard)
 
 
 # обратная связь
@@ -32,10 +32,10 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"user_id": user_id}
     )
-    await call.message.answer(text=f'Начало диалога с {username}')
+    await call.message.answer(text=text(f'<b>Система</b>\nНачало диалога с {username}'))
     await bot.send_message(chat_id=user_id,
-                           text='Скоро с вами свяжется Администратор\n'
-                                'Диалог будет проходить непосредственно через бота')
+                           text=text('<b>Система</b>\nСкоро с вами свяжется Администратор\n'
+                                     'Диалог будет проходить непосредственно через бота'))
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
 
@@ -84,7 +84,7 @@ async def chattingEnd(call: CallbackQuery, state: FSMContext):
     await state.reset_state(with_data=True)
     user_state = dp.current_state(chat=user_id, user=user_id)
     await user_state.reset_state(with_data=True)
-    await call.message.answer(text='Система:\nДиалог завершен')
-    await bot.send_message(chat_id=user_id, text='Система:\nДиалог завершен', reply_markup=link)
+    await call.message.answer(text=text('<b>Система</b>\nДиалог завершен'))
+    await bot.send_message(chat_id=user_id, text=text('<b>Система</b>\nДиалог завершен', reply_markup=link))
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
