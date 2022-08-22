@@ -10,7 +10,7 @@ from aiogram.utils.markdown import text
 from data.config import ADMINS
 from keyboards.inline import registries, cancelKeyboard, iniciators, files
 from loader import dp, bot
-from utils.db_api.db_manage import write_to_excel, drop_excel, update_data
+from utils.db_api.db_manage import write_to_excel, drop_excel
 from states.states import AdminStates
 from utils.db_api.create_registry import get_date, create_book, set_active_registry, get_active_registry, readBuffer, \
     writeBuffer
