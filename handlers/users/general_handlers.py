@@ -84,7 +84,8 @@ async def cancel(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(user_id=ADMINS, text_contains='update_register')
 async def update_registry(call: CallbackQuery):
-    file_id = call.message.document.file_id
+    await call.message.answer('Пришлите excel документ')
+    file_id = await call.message.document.file_id
     file = bot.get_file(file_id=file_id)
     logging.info(f'file = {file}')
 
