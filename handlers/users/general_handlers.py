@@ -87,10 +87,12 @@ async def getRegistry(call: CallbackQuery, state: FSMContext):
     await call.message.answer('Пришлите excel документ')
     await AdminStates.UploadFile.set()
     await bot.answer_callback_query(call.id)
+    logging.info(msg='AAAAAAAAAAAAAAAAAAAAAAAAA')
 
 
 @dp.message_handler(user_id=ADMINS, state=AdminStates.UploadFile)
 async def updateDataBase(message: Message, state: FSMContext):
+    logging.info(msg='DDDDDDDDDDDDDDDDDDDDDDDD')
     file_id = message.document.file_id
     file = bot.get_file(file_id=file_id)
     logging.info(msg=f'file = {file_id}')
