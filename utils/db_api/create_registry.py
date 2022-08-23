@@ -87,7 +87,6 @@ def get_records_by_name(user_name: str) -> None:
 
     :param user_name: ful_name на сервере telegram
     """
-    logging.info(msg='Start')
     register = openpyxl.open('data/register.xlsx')
     register_sheet = register.worksheets[0]
     report = openpyxl.open('data/user_report.xlsx')
@@ -95,6 +94,5 @@ def get_records_by_name(user_name: str) -> None:
 
     line = []
     for row in range(2, register_sheet.max_row + 1):
-        logging.info(msg=f'{register_sheet.cell(row=row, column=2).value}')
-        if register_sheet.cell(row=row, column=2) == user_name:
+        if register_sheet.cell(row=row, column=2).value == user_name:
             logging.info(msg=f'НАШЛИ ЗАПИСЬ')
