@@ -6,6 +6,7 @@ from aiogram.dispatcher import FSMContext
 
 from data.config import ADMINS
 from keyboards.inline import payment, chatting_end
+from keyboards.inline.init_keyboard import links
 from loader import dp, bot
 from states.states import IniciatorStates, Chatting
 
@@ -126,7 +127,7 @@ async def clearStates(message: Message, state: FSMContext):
     await message.answer(text(
         "Заявка в статусе:\n<b>«Принято в оплату»</b>\n\n" +
         '‼️' + "<i>Мы сообщим вам о сроках оплаты и пришлём Платежку с отметкой банка"
-               "(если в этом будет необходимость)</i>\n\nСпасибо!"))
+               "(если в этом будет необходимость)</i>\n\nСпасибо!"), reply_markup=links)
     # параметр with_data = False отключает стирание данный в data
     # стираем состояние
     await state.reset_state(with_data=True)

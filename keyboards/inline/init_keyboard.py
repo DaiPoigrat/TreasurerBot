@@ -20,7 +20,7 @@ payment = InlineKeyboardMarkup(
     ]
 )
 
-link = InlineKeyboardMarkup(
+links = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(text='Связаться с финансистом', callback_data='link_to_admin'),

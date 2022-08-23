@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.admin_keyboards import cancelKeyboard, dataBaseKeyboard, chatting_end
-from keyboards.inline.init_keyboard import link
+from keyboards.inline.init_keyboard import links
 from loader import dp, bot
 from data.config import ADMINS
 from states.states import AdminStates, Chatting
@@ -85,6 +85,6 @@ async def chattingEnd(call: CallbackQuery, state: FSMContext):
     user_state = dp.current_state(chat=user_id, user=user_id)
     await user_state.reset_state(with_data=True)
     await call.message.answer(text=text('<b>Система</b>\nДиалог завершен'))
-    await bot.send_message(chat_id=user_id, text=text('<b>Система</b>\nДиалог завершен'), reply_markup=link)
+    await bot.send_message(chat_id=user_id, text=text('<b>Система</b>\nДиалог завершен'), reply_markup=links)
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
