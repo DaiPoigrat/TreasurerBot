@@ -18,7 +18,10 @@ cancelKeyboard = InlineKeyboardMarkup(
 dataBaseKeyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="Скачать книгу", callback_data='download_register'),
+            InlineKeyboardButton(text="Скачать реестр", callback_data='download_register'),
+        ],
+        [
+            InlineKeyboardButton(text="Посмотреть данные с базы", callback_data='download_db')
         ],
         [
             InlineKeyboardButton(text="Обновить данные", callback_data='update_register'),

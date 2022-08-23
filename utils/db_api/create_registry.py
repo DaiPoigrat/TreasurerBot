@@ -90,9 +90,14 @@ def get_records_by_name(user_name: str) -> None:
     register = openpyxl.open('data/register.xlsx')
     register_sheet = register.worksheets[0]
     report = openpyxl.open('data/user_report.xlsx')
-    report_sheet = register.worksheets[0]
+    report_sheet = report.worksheets[0]
 
-    line = []
+    local_titles = []
+    for col in range(1, register_sheet.max_column + 1):
+        local_titles.append(register_sheet.cell(row=1, column=col).value)
+
+    report_sheet.append(local_titles)
     for row in range(2, register_sheet.max_row + 1):
         if register_sheet.cell(row=row, column=2).value == user_name:
-            logging.info(msg=f'НАШЛИ ЗАПИСЬ')
+            # report_sheet.append(register_sheet.iter_rows(max_row=row, values_only=True))
+            logging.info(msg=f'СТРОКА {row} ==> {register_sheet.iter_rows(max_row=row, values_only=True)}')

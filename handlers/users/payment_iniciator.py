@@ -212,3 +212,4 @@ async def link(call: CallbackQuery):
 async def getPayments(call: CallbackQuery):
     user_name = call.from_user.full_name
     get_records_by_name(user_name=user_name)
+    await bot.answer_callback_query(call.id)

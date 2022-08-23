@@ -23,6 +23,16 @@ from data.config import DB_URI
 async def downloadRegistry(call: CallbackQuery):
     doc = InputFile(path_or_bytesio='data/register.xlsx')
     await call.message.answer_document(document=doc)
+    await bot.answer_callback_query(call.id)
+
+
+@dp.callback_query_handler(user_id=ADMINS, text_contains='download_db')
+async def downloadRegistry(call: CallbackQuery):
+    write_to_excel()
+    doc = InputFile(path_or_bytesio='data/database.xlsx')
+    await call.message.answer_document(document=doc)
+    await bot.answer_callback_query(call.id)
+    drop_excel()
 
 
 @dp.callback_query_handler(user_id=ADMINS, text_contains='update_register', state=None)

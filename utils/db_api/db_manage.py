@@ -43,7 +43,7 @@ def write_to_excel() -> None:
 
         result = db_object.fetchall()
 
-        doc = openpyxl.open(filename='data/register.xlsx')
+        doc = openpyxl.open(filename='data/database.xlsx')
         doc.create_sheet(title='Заявки', index=0)
         sheet = doc.worksheets[0]
         sheet.append(titles)
@@ -51,7 +51,7 @@ def write_to_excel() -> None:
         for row in result:
             sheet.append([str(item).rstrip() for item in row])
 
-        doc.save(filename='data/register.xlsx')
+        doc.save(filename='data/database.xlsx')
     except Exception as err:
         logging.exception(err)
 
@@ -60,9 +60,9 @@ def drop_excel() -> None:
     """
     Очищает excel файл
     """
-    doc = openpyxl.open(filename='data/register.xlsx')
+    doc = openpyxl.open(filename='data/database.xlsx')
     doc.remove_sheet(doc.worksheets[0])
-    doc.save(filename='data/register.xlsx')
+    doc.save(filename='data/database.xlsx')
 
 
 def get_users_id() -> list:
