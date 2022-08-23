@@ -1,4 +1,6 @@
 # здесь находятся все хендлеры по обработке действий с инициатором
+import logging
+
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.dispatcher import FSMContext
 
@@ -208,5 +210,6 @@ async def link(call: CallbackQuery):
 
 @dp.callback_query_handler(text_contains='get_my_payments')
 async def getPayments(call: CallbackQuery):
+    logging.info(msg='GET MY PAY')
     user_name = call.from_user.full_name
     get_records_by_name(user_name=user_name)
