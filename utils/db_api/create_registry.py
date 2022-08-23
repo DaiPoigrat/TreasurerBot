@@ -87,9 +87,9 @@ def get_records_by_name(user_name: str) -> None:
 
     :param user_name: ful_name на сервере telegram
     """
-    register = openpyxl.open('data/register')
+    register = openpyxl.open('data/register.xlsx')
     register_sheet = register.worksheets[0]
-    report = openpyxl.open('data/user_report')
+    report = openpyxl.open('data/user_report.xlsx')
     report_sheet = register.worksheets[0]
 
     line = []

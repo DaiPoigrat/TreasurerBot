@@ -24,6 +24,8 @@ link = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(text='Связаться с финансистом', callback_data='link_to_admin'),
+        ],
+        [
             InlineKeyboardButton(text='Мои завки', callback_data='get_my_payments'),
         ]
     ]
