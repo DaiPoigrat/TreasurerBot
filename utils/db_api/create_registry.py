@@ -89,7 +89,10 @@ def get_records_by_name(user_name: str) -> None:
     """
     register = openpyxl.open('data/register.xlsx')
     register_sheet = register.worksheets[0]
+
     report = openpyxl.open('data/user_report.xlsx')
+    report.remove_sheet(report.worksheets[0])
+    report.create_sheet(title='Заявки')
     report_sheet = report.worksheets[0]
 
     local_titles = []
@@ -99,6 +102,7 @@ def get_records_by_name(user_name: str) -> None:
     report_sheet.append(local_titles)
     for row in range(2, register_sheet.max_row + 1):
         if register_sheet.cell(row=row, column=2).value == user_name:
-            # report_sheet.append(register_sheet.iter_rows(max_row=row, values_only=True))
-            logging.info(
-                msg=f'СТРОКА {row} ==> {[value for value in register_sheet.iter_rows(min_row=row, max_row=row, values_only=True)]}')
+            report_sheet.append(
+                [value for value in register_sheet.iter_rows(min_row=row, max_row=row, values_only=True)])
+    register.close()
+    report.save('data/user_report.xlsx')

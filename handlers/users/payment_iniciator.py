@@ -1,7 +1,7 @@
 # здесь находятся все хендлеры по обработке действий с инициатором
 import logging
 
-from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.dispatcher import FSMContext
 
 from data.config import ADMINS
@@ -212,4 +212,7 @@ async def link(call: CallbackQuery):
 async def getPayments(call: CallbackQuery):
     user_name = call.from_user.full_name
     get_records_by_name(user_name=user_name)
+    doc = InputFile(path_or_bytesio='data/user_report.xlsx')
+    await call.message.answer_document(document=doc)
     await bot.answer_callback_query(call.id)
+
