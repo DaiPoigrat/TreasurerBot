@@ -6,7 +6,7 @@ from aiogram.types import InputFile
 from data.config import DB_URI
 
 titles = ['Дата поступления', 'Инициатор платежа', 'Основание платежа', 'id документа', 'Сумма платежа',
-          'Размер оплаты', 'Получатель', 'Назначение', 'Крайний срок оплаты']
+          'Размер оплаты', 'Получатель', 'Назначение', 'Крайний срок оплаты', 'Тип']
 
 
 def add_record(data: list) -> None:
@@ -18,8 +18,8 @@ def add_record(data: list) -> None:
         db_object = db_connection.cursor()
 
         db_object.execute(
-            "INSERT INTO register(id, date_of_application, payment_iniciator, basis_of_payment, file_id, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9]))
+            "INSERT INTO register(id, date_of_application, payment_iniciator, basis_of_payment, file_id, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline, type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10]))
         db_connection.commit()
 
         doc = openpyxl.open('data/register.xlsx')
@@ -38,7 +38,7 @@ def write_to_excel() -> None:
         db_object = db_connection.cursor()
 
         db_object.execute(
-            "SELECT date_of_application, payment_iniciator, basis_of_payment, file_id, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline FROM register"
+            "SELECT date_of_application, payment_iniciator, basis_of_payment, file_id, payment_sum, payment_amount, payment_recipient, purpose_of_payment, payment_deadline, type FROM register"
         )
 
         result = db_object.fetchall()

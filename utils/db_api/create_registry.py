@@ -9,7 +9,7 @@ import typing
 from utils.db_api.db_manage import add_record
 
 dict_keys = ['user_id', 'file_name', 'file_id', 'payment_sum', 'payment_amount', 'payment_recipient',
-             'purpose_of_payment', 'payment_deadline']
+             'purpose_of_payment', 'payment_deadline', 'type']
 
 titles = ['Дата поступления', 'Инициатор платежа', 'Основание платежа', 'Сумма платежа', 'Размер оплаты',
           'Получатель', 'Назначение', 'Крайний срок оплаты']
@@ -70,7 +70,8 @@ def create_data_record(data: dict, name: str) -> None:
         data[dict_keys[4]],
         data[dict_keys[5]],
         data[dict_keys[6]],
-        data[dict_keys[7]]
+        data[dict_keys[7]],
+        data[dict_keys[8]]
     ]
 
     add_record(data=data_set)
