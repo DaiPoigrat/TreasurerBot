@@ -96,4 +96,4 @@ def get_records_by_name(user_name: str) -> None:
     line = []
     for row in range(2, register_sheet.max_row + 1):
         if register_sheet.cell(row=row, column=2) == user_name:
-            logging.info(msg='НАШЛИ ЗАПИСЬ')
+            logging.info(msg=f'{register_sheet.cell(row=row, column=2)}')
