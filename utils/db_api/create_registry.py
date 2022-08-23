@@ -101,4 +101,4 @@ def get_records_by_name(user_name: str) -> None:
         if register_sheet.cell(row=row, column=2).value == user_name:
             # report_sheet.append(register_sheet.iter_rows(max_row=row, values_only=True))
             logging.info(
-                msg=f'СТРОКА {row} ==> {[value for value in register_sheet.iter_rows(max_row=row, values_only=True)]}')
+                msg=f'СТРОКА {row} ==> {[value for value in register_sheet.iter_rows(min_row=row, max_row=row, values_only=True)]}')
