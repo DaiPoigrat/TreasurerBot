@@ -197,6 +197,8 @@ async def link(call: CallbackQuery):
 
     msg_text = text(f'С вами хочет связаться\n{name}')
 
+    await call.message.answer(text=text('Запрос отправлен, ожидайте'))
+
     link_answer = InlineKeyboardMarkup(
         inline_keyboard=[
             [
