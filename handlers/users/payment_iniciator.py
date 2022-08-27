@@ -146,7 +146,7 @@ async def clearStates(message: Message, state: FSMContext):
         ]
     )
     # оповещение админу о новой заявке
-    await bot.send_message(chat_id=ADMINS[0], text=msg_text, reply_markup=chatting_start)
+    await bot.send_message(chat_id=ADMINS, text=msg_text, reply_markup=chatting_start)
 
 
 # форма отправки сообщения от инициатора админу
@@ -159,13 +159,16 @@ async def chatting(message: Message, state: FSMContext):
     flag_doc = False
     flag_photo = False
 
+    data = state.get_data()
+    admin_id = data["admin_id"]
+
     try:
         # получаем id файла на сервере telegram
         file_id = message.document.file_id
         # делаем подпись
         caption = text(f'<b>{username}</b>\n{message.caption}')
         # отправляем админу
-        await bot.send_document(chat_id=ADMINS[0], document=file_id, caption=caption, reply_markup=chatting_end)
+        await bot.send_document(chat_id=admin_id, document=file_id, caption=caption, reply_markup=chatting_end)
     except:
         # если не удалось отправить документ
         flag_doc = True
@@ -178,13 +181,13 @@ async def chatting(message: Message, state: FSMContext):
         # делаем подпись
         caption = text(f'<b>{username}</b>\n{message.caption}')
         # отправляем админу
-        await bot.send_photo(chat_id=ADMINS[0], photo=photo_id, caption=caption, reply_markup=chatting_end)
+        await bot.send_photo(chat_id=admin_id, photo=photo_id, caption=caption, reply_markup=chatting_end)
     except:
         # если не удалось отправить фото
         flag_photo = True
 
     if flag_doc and flag_photo:
-        await bot.send_message(chat_id=ADMINS[0], text=msg, reply_markup=chatting_end)
+        await bot.send_message(chat_id=admin_id, text=msg, reply_markup=chatting_end)
 
 
 # отправка сообщения админу об обратной связи
@@ -206,7 +209,7 @@ async def link(call: CallbackQuery):
             ]
         ]
     )
-    await bot.send_message(chat_id=ADMINS[0], text=msg_text, reply_markup=link_answer)
+    await bot.send_message(chat_id=ADMINS, text=msg_text, reply_markup=link_answer)
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
 
@@ -218,4 +221,3 @@ async def getPayments(call: CallbackQuery):
     doc = InputFile(path_or_bytesio='data/user_report.xlsx')
     await call.message.answer_document(document=doc)
     await bot.answer_callback_query(call.id)
-

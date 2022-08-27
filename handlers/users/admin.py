@@ -32,6 +32,11 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
     await state.update_data(
         {"user_id": user_id}
     )
+
+    await user_state.update_data(
+        {"admin_id": call.from_user.id}
+    )
+
     await call.message.answer(text=text(f'<b>Система</b>\nНачало диалога с {username}'))
     await bot.send_message(chat_id=user_id,
                            text=text('<b>Система</b>\nСкоро с вами свяжется Администратор\n'
