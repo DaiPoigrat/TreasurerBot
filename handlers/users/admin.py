@@ -33,6 +33,8 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
 
     await user_state.set_state(state=Chatting.ToAdmin)
 
+    logging.info(msg=f'USER STATE == {user_state.get_state()}')
+
     username = data[3]
     await state.update_data(
         {"user_id": user_id}
