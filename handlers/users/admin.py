@@ -23,8 +23,6 @@ async def dataBaseManage(message: Message):
 # обратная связь
 @dp.callback_query_handler(user_id=ADMINS, text_contains='chatting_start', state=None)
 async def startChatting(call: CallbackQuery, state: FSMContext):
-    await state.set_state(Chatting.ToPI)
-
     data = call.data.split('_')
     user_id = int(data[2])
     user_state = dp.current_state(chat=user_id, user=user_id)
@@ -32,6 +30,7 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
     if await user_state.get_state() == 'Chatting:ToAdmin':
         await call.message.answer('Пользователь уже переписывается с другим администратором')
     else:
+        await state.set_state(Chatting.ToPI)
         await user_state.set_state(state=Chatting.ToAdmin)
 
         username = data[3]
