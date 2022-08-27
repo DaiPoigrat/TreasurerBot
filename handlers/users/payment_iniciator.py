@@ -160,7 +160,7 @@ async def chatting(message: Message, state: FSMContext):
     flag_doc = False
     flag_photo = False
 
-    data = state.get_data()
+    data = await state.get_data()
     admin_id = data["admin_id"]
 
     try:
