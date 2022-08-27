@@ -16,7 +16,6 @@ async def on_startup_notify(dp: Dispatcher):
 
 async def on_shutdown_notify(dp: Dispatcher):
     for admin in ADMINS:
-        logging.info()
         try:
             await dp.bot.send_message(admin, "Бот Закрыт")
 
