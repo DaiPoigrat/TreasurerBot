@@ -1,4 +1,6 @@
 # здесь находятся все хендлеры по обработке действий с админом
+import logging
+
 from aiogram.types import Message, ContentType, CallbackQuery, InputFile
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher import FSMContext
@@ -26,6 +28,9 @@ async def startChatting(call: CallbackQuery, state: FSMContext):
     data = call.data.split('_')
     user_id = int(data[2])
     user_state = dp.current_state(chat=user_id, user=user_id)
+
+    logging.info(msg=f'USER STATE == {user_state.get_state()}')
+
     await user_state.set_state(state=Chatting.ToAdmin)
 
     username = data[3]
