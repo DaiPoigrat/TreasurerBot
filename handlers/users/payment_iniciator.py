@@ -146,7 +146,8 @@ async def clearStates(message: Message, state: FSMContext):
         ]
     )
     # оповещение админу о новой заявке
-    await bot.send_message(chat_id=ADMINS, text=msg_text, reply_markup=chatting_start)
+    for admin in ADMINS:
+        await bot.send_message(chat_id=admin, text=msg_text, reply_markup=chatting_start)
 
 
 # форма отправки сообщения от инициатора админу
