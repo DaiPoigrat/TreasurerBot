@@ -19,9 +19,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     if str(user_id) in ADMINS:
         await message.answer(text(
             "Это панель администратора.\nПо команде /dbmanage можно увидеть весь функционал."
-            "\nЕсли вы увидели сообщение о старте бота, то внутренний реестр является пустым. "
-            "Поэтому после пререзапуска бота необходимо закинуть на сервер актуальную информацию "
-            "по кнопке <b>Обновить данные</b>"))
+        ))
     else:
         await message.answer(f"Введите платеж", reply_markup=keys)
 
