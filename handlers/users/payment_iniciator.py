@@ -214,7 +214,8 @@ async def link(call: CallbackQuery):
             ]
         ]
     )
-    await bot.send_message(chat_id=ADMINS, text=msg_text, reply_markup=link_answer)
+    for admin in ADMINS:
+        await bot.send_message(chat_id=admin, text=msg_text, reply_markup=link_answer)
     # избавляемся от часиков
     await bot.answer_callback_query(call.id)
 

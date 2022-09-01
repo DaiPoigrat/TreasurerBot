@@ -3,3 +3,4 @@ environs~=8.0.0
 openpyxl
 emoji
 psycopg2
+yadisk

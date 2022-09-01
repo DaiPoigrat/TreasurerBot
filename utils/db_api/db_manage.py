@@ -2,6 +2,7 @@ import psycopg2
 import logging
 import openpyxl
 from aiogram.types import InputFile
+from yandex_disk import upload_register
 
 from data.config import DB_URI
 
@@ -25,6 +26,7 @@ def add_record(data: list) -> None:
         doc = openpyxl.open('data/register.xlsx')
         doc.worksheets[0].append(data[1:])
         doc.save('data/register.xlsx')
+        upload_register()
     except Exception as err:
         logging.exception(err)
 
