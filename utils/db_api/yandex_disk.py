@@ -10,7 +10,7 @@ def upload_register():
     """
     try:
         disk = yadisk.YaDisk(token=YADISK_TOKEN)
-        disk.upload(path_or_file='register.xlsx', dst_path='data/register.xlsx')
+        disk.upload(path_or_file='data/register.xlsx', dst_path='register.xlsx')
         logging.info(msg='Реестр успешно отправлен на диск')
     except Exception as err:
         logging.exception(err)
