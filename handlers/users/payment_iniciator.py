@@ -14,7 +14,7 @@ from aiogram.utils.markdown import text
 from utils.db_api.create_registry import get_date, create_data_record, get_records_by_name
 
 
-# получаем сумму платежа
+# получаем основание платежа
 # @dp.message_handler(state=StateList.AnyState)
 @dp.message_handler(state=IniciatorStates.State1, content_types=['photo', 'document', 'text'])
 async def getPaymentSum(message: Message, state: FSMContext):
@@ -69,11 +69,15 @@ async def getPaymentSum(message: Message, state: FSMContext):
 @dp.message_handler(state=IniciatorStates.State2)
 async def getPaymentAmount(message: Message, state: FSMContext):
     # обновляем данные
-    await state.update_data(
-        {"payment_sum": message.text}
-    )
-    await message.answer("Укажите размер оплаты", reply_markup=payment)
-    await IniciatorStates.State3.set()
+    try:
+        await state.update_data(
+            {"payment_sum": int(message.text)}
+        )
+        await message.answer("Укажите размер оплаты", reply_markup=payment)
+        await IniciatorStates.State3.set()
+    except Exception as err:
+        logging.exception(err)
+        await message.answer('Введено неверное значение\nПожалуйста, введите число')
 
 
 # получаем размер оплаты
