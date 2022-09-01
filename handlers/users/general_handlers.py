@@ -19,6 +19,9 @@ from data.config import DB_URI
 
 
 # отправить реестр
+from utils.db_api.yandex_disk import upload_register
+
+
 @dp.callback_query_handler(user_id=ADMINS, text_contains='download_register')
 async def downloadRegistry(call: CallbackQuery):
     doc = InputFile(path_or_bytesio='data/register.xlsx')
@@ -48,6 +51,7 @@ async def updateDataBase(message: Message, state: FSMContext):
         file_id = message.document.file_id
         file = await bot.get_file(file_id=file_id)
         await bot.download_file(file_path=file.file_path, destination='data/register.xlsx')
+        upload_register()
         await message.answer(text('<b>Система</b>\nДанные успешно обновлены!'))
     except Exception as err:
         await message.answer(text('<b>Система</b>\nПроизошла ошибка, обратитесь к администратору!'))
