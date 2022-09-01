@@ -2,6 +2,7 @@ from aiogram import executor
 
 from loader import dp
 import middlewares, filters, handlers
+from utils.db_api.yandex_disk import download_register
 from utils.notify_admins import on_startup_notify, on_shutdown_notify
 from utils.set_bot_commands import set_default_commands
 
@@ -12,6 +13,8 @@ async def on_startup(dispatcher):
 
     # Уведомляет про запуск
     await on_startup_notify(dispatcher)
+    # обновляет реестр
+    download_register()
 
 
 async def on_shutdown(dispatcher):

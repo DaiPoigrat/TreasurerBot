@@ -10,6 +10,7 @@ def upload_register():
     """
     try:
         disk = yadisk.YaDisk(token=YADISK_TOKEN)
+        disk.remove(path='register.xlsx')
         disk.upload(path_or_file='data/register.xlsx', dst_path='register.xlsx')
         logging.info(msg='Реестр успешно отправлен на диск')
     except Exception as err:
@@ -22,7 +23,7 @@ def download_register():
     """
     try:
         disk = yadisk.YaDisk(token=YADISK_TOKEN)
-        disk.download(src_path='data/register.xlsx', path_or_file='register.xlsx')
+        disk.download(src_path='register.xlsx', path_or_file='data/register.xlsx')
         logging.info(msg='Реестр успешно обновлен с диска')
     except Exception as err:
         logging.exception(err)
