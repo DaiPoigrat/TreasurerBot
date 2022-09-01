@@ -2,9 +2,9 @@ import psycopg2
 import logging
 import openpyxl
 from aiogram.types import InputFile
-from yandex_disk import upload_register
 
 from data.config import DB_URI
+from utils.db_api.yandex_disk import upload_register
 
 titles = ['Дата поступления', 'Инициатор платежа', 'Основание платежа', 'id документа', 'Сумма платежа',
           'Размер оплаты', 'Получатель', 'Назначение', 'Крайний срок оплаты', 'Тип']
